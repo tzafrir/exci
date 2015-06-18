@@ -1,7 +1,5 @@
 package com.hackon.tools;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +11,7 @@ import opennlp.tools.parser.ParserModel;
 
 public class ParserText {
 
-	static Set<String> verbPhrases = new HashSet<String>();
+	static Set<String> verbPhrases; 
 
 	private static String line;
 
@@ -30,9 +28,7 @@ public class ParserText {
 		}
 	}
 
-	public static void parserAction() throws Exception {
-		InputStream is = new FileInputStream("en-parser-chunking.bin");
-		ParserModel model = new ParserModel(is);
+	public static void parserAction(ParserModel model) throws Exception {
 		Parser parser = ParserFactory.create(model);
 		Parse topParses[] = ParserTool.parseLine(line, parser, 1);
 		for (Parse p : topParses) {
@@ -41,10 +37,10 @@ public class ParserText {
 		}
 	}
 
-	public String[] findVerbs(String sentence) throws Exception {
+	public String[] findVerbs(String sentence, ParserModel model) throws Exception {
 		line = sentence;
-		parserAction();
-		// System.out.println("List of Verb Parse : " + verbPhrases);
+		verbPhrases = new HashSet<String>();
+		parserAction(model);
 		String[] verbs = verbPhrases.toArray(new String[verbPhrases.size()]);
 		return verbs;
 	}
