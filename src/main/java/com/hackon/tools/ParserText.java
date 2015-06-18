@@ -9,13 +9,15 @@ import opennlp.tools.parser.Parser;
 import opennlp.tools.parser.ParserFactory;
 import opennlp.tools.parser.ParserModel;
 
+//Class for making an array of Verbs or Nouns
 public class ParserText {
 
-	static Set<String> verbPhrases; 
+	private static Set<String> verbPhrases;
+	private static Set<String> nounPhrases;
 
 	private static String line;
 
-	public static void getWordPhrases(Parse p) {
+	private static void getVerbs(Parse p) {
 
 		if (p.getType().equals("VB") || p.getType().equals("VBP")
 				|| p.getType().equals("VBG") || p.getType().equals("VBD")
@@ -24,24 +26,55 @@ public class ParserText {
 		}
 
 		for (Parse child : p.getChildren()) {
-			getWordPhrases(child);
+			getVerbs(child);
 		}
 	}
 
-	public static void parserAction(ParserModel model) throws Exception {
+	private static void getNouns(Parse p) {
+		if (p.getType().equals("NN") || p.getType().equals("NNS")
+				|| p.getType().equals("NNP") || p.getType().equals("NNPS")) {
+			nounPhrases.add(p.getCoveredText());
+		}
+
+		for (Parse child : p.getChildren()) {
+			getNouns(child);
+		}
+	}
+
+	private static void parserActionForVerbs(ParserModel model) throws Exception {
 		Parser parser = ParserFactory.create(model);
 		Parse topParses[] = ParserTool.parseLine(line, parser, 1);
 		for (Parse p : topParses) {
 			// p.show();
-			getWordPhrases(p);
+			getVerbs(p);
 		}
 	}
 
-	public String[] findVerbs(String sentence, ParserModel model) throws Exception {
+	private static void parserActionForNouns(ParserModel model) {
+		Parser parser = ParserFactory.create(model);
+		Parse topParses[] = ParserTool.parseLine(line, parser, 1);
+		for (Parse p : topParses) {
+			getNouns(p);
+		}
+	}
+
+	public String[] findNouns(String sentence, ParserModel model) {
 		line = sentence;
+		nounPhrases = new HashSet<String>();
 		verbPhrases = new HashSet<String>();
-		parserAction(model);
+		parserActionForNouns(model);
+		String[] nouns = nounPhrases.toArray(new String[nounPhrases.size()]);
+		return nouns;
+	}
+
+	public String[] findVerbs(String sentence, ParserModel model)
+			throws Exception {
+		line = sentence;
+		nounPhrases = new HashSet<>();
+		verbPhrases = new HashSet<String>();
+		parserActionForVerbs(model);
 		String[] verbs = verbPhrases.toArray(new String[verbPhrases.size()]);
 		return verbs;
 	}
+
 }

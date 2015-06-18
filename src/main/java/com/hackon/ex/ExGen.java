@@ -13,7 +13,6 @@ import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import opennlp.tools.parser.ParserModel;
-import opennlp.tools.util.InvalidFormatException;
 
 import com.hackon.entity.ChooseTheVerb;
 import com.hackon.entity.Exercise;
@@ -46,18 +45,21 @@ public class ExGen {
 	}
 
 	// this is ex number 3
-	public ChooseTheVerb exercise3ChooseTheVerb(Exercise ex)
-			throws InvalidFormatException, IOException {
+	public ChooseTheVerb exercise3ChooseTheVerb(Exercise ex) {
 		String kind = "choose_correct_verb";
 		String[] text = ex.getSentences();
 		Map<Integer, String[]> preResult = new TreeMap<Integer, String[]>();
 
 		ParserText pt = new ParserText();
 		InputStream is;
-		ParserModel model;
+		ParserModel model = null;
 
-		is = new FileInputStream("en-parser-chunking.bin");
-		model = new ParserModel(is);
+		try {
+			is = new FileInputStream("en-parser-chunking.bin");
+			model = new ParserModel(is);
+		} catch (IOException e1) {
+			// DO_SMTH
+		}
 
 		for (int i = 0; i < text.length; i++) {
 			String[] verbs;
@@ -112,22 +114,31 @@ public class ExGen {
 	}
 
 	// test for exercise3
-	/*
-	 * public static void main(String[] args) { ChooseTheVerb ch = new
-	 * ChooseTheVerb(); String one = "I want to play with you"; String two =
-	 * "Run and run and make this world better"; String three = "Sababa";
-	 * String[] arr = new String[3]; arr[0] = one; arr[1] = two; arr[2] = three;
-	 * ch.setSentences(arr); ExGen e = new ExGen(); try { ch =
-	 * e.exercise3ChooseTheVerb(ch); } catch (InvalidFormatException e1) { //
-	 * TODO Auto-generated catch block e1.printStackTrace(); } catch
-	 * (IOException e1) { // TODO Auto-generated catch block
-	 * e1.printStackTrace(); }
-	 * 
-	 * String[] res1 = ch.getSentences(); for (String s : res1) {
-	 * System.out.println(s); } Map<Integer, String[]> v = ch.getVerbs(); for
-	 * (Map.Entry<Integer, String[]> ee : v.entrySet()) { for (String s :
-	 * ee.getValue()) { System.out.print(s + "  "); } } }
-	 */
+
+//	public static void main(String[] args) throws IOException {
+//		ChooseTheVerb ch = new ChooseTheVerb();
+//		String one = "I want to play with you";
+//		String two = "Run and run and make this world better";
+//		String three = "Sababa";
+//		String[] arr = new String[3];
+//		arr[0] = one;
+//		arr[1] = two;
+//		arr[2] = three;
+//		ch.setSentences(arr);
+//		ExGen e = new ExGen();
+//		ch = e.exercise3ChooseTheVerb(ch);
+//
+//		String[] res1 = ch.getSentences();
+//		for (String s : res1) {
+//			System.out.println(s);
+//		}
+//		Map<Integer, String[]> v = ch.getVerbs();
+//		for (Map.Entry<Integer, String[]> ee : v.entrySet()) {
+//			for (String s : ee.getValue()) {
+//				System.out.print(s + "  ");
+//			}
+//		}
+//	}
 	// test for exercise2MixWords
 	/*
 	 * public static void main(String[] args) { ExGen ex = new ExGen(); String
