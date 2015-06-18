@@ -1,5 +1,7 @@
 package com.hackon;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -109,23 +111,27 @@ public class ExciController {
     return ex;
   }
 
-    @RequestMapping(value = "/exercises")
-    public Exercise[] exercises(@RequestParam(value="sentences") String sentencesJson) {
-      JsonElement sentencesElement = new JsonParser().parse(sentencesJson);
-      JsonArray sentences = sentencesElement.getAsJsonArray();
+  @RequestMapping(value = "/exercises")
+  public List<Exercise> exercises(@RequestParam(value="sentences") String sentencesJson) {
+    JsonElement sentencesElement = new JsonParser().parse(sentencesJson);
+    JsonArray sentences = sentencesElement.getAsJsonArray();
 
-      for (int i=0; i < sentences.size(); ++i) {
-        String sentence = sentences.get(i).toString();
-        // Create array of nouns
-        // Create array of verbs
-      }
-
-      return new Exercise[] {
-        picture(),
-        identifyPicture(),
-        identifyWord(),
-				mixWords(), 
-				chooseCorrectVerb()
-      };
+    for (int i=0; i < sentences.size(); ++i) {
+      String sentence = sentences.get(i).toString();
+      // Create array of nouns
+      // Create array of verbs
     }
+
+    ArrayList<Exercise> exercises = new ArrayList<Exercise>();
+    exercises.add(picture());
+    for (int i=0; i < 2; ++i) {
+      exercises.add(mixWords());
+    }
+    for (int i=0; i < 2; ++i) {
+      exercises.add(chooseCorrectVerb());
+    }
+    exercises.add(identifyPicture());
+    exercises.add(identifyWord());
+    return exercises;
+  }
 }
