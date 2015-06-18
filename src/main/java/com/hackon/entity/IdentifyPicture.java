@@ -5,21 +5,28 @@ import java.util.Random;
 
 import com.hackon.FlickrSearch;
 
-public class SeePicture extends Exercise {
+public class IdentifyPicture extends Exercise {
   protected String word;
+  protected String[] otherWords;
 
-  public SeePicture(String word) {
+  public IdentifyPicture(String word, String[] otherWords) {
     this.word = word;
+    this.otherWords = otherWords;
   }
 
   @Override
   public String getKind() {
-    return "see_picture";
+    return "identify_picture";
   }
 
   @Override
   public String[] getSentences() {
-    return new String[] {word};
+    String[] result = new String[otherWords.length + 1];
+    result[0] = word;
+    for (int i = 0; i < otherWords.length; ++i) {
+      result[i+1] = otherWords[i];
+    }
+    return result;
   }
 
   @Override

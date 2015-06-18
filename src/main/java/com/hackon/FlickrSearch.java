@@ -52,6 +52,7 @@ public class FlickrSearch {
   public List<String> search(String keyword) {
     try {
       SearchParameters searchParameters = new SearchParameters();
+      searchParameters.setText(keyword);
       searchParameters.setTags(new String[] {keyword});
       PhotoList<Photo> photos = flickr.getPhotosInterface().search(searchParameters, 0, 0);
       List<String> results = photos.stream().map(p -> p.getMediumUrl()).collect(Collectors.toList());
