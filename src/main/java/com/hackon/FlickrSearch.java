@@ -1,38 +1,14 @@
 package com.hackon;
 
-import com.flickr4java.flickr.*;
-import com.flickr4java.flickr.activity.*;
-import com.flickr4java.flickr.auth.*;
-import com.flickr4java.flickr.blogs.*;
-import com.flickr4java.flickr.cameras.*;
-import com.flickr4java.flickr.collections.*;
-import com.flickr4java.flickr.commons.*;
-import com.flickr4java.flickr.contacts.*;
-import com.flickr4java.flickr.favorites.*;
-import com.flickr4java.flickr.galleries.*;
-import com.flickr4java.flickr.groups.*;
-import com.flickr4java.flickr.interestingness.*;
-import com.flickr4java.flickr.machinetags.*;
-import com.flickr4java.flickr.panda.*;
-import com.flickr4java.flickr.people.*;
-import com.flickr4java.flickr.photos.*;
-import com.flickr4java.flickr.photosets.*;
-import com.flickr4java.flickr.places.*;
-import com.flickr4java.flickr.prefs.*;
-import com.flickr4java.flickr.push.*;
-import com.flickr4java.flickr.reflection.*;
-import com.flickr4java.flickr.stats.*;
-import com.flickr4java.flickr.tags.*;
-import com.flickr4java.flickr.test.*;
-import com.flickr4java.flickr.uploader.*;
-import com.flickr4java.flickr.urls.*;
-import com.flickr4java.flickr.util.*;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import com.flickr4java.flickr.Flickr;
+import com.flickr4java.flickr.FlickrException;
+import com.flickr4java.flickr.REST;
+import com.flickr4java.flickr.photos.Photo;
+import com.flickr4java.flickr.photos.PhotoList;
+import com.flickr4java.flickr.photos.SearchParameters;
 
 public class FlickrSearch {
   private Flickr flickr;

@@ -33,9 +33,14 @@ public class ExGen {
 	public Exercise exercise2MixWords(Exercise ex) {
 		String kind = "mix_words";
 		String[] text = ex.getSentences();
-		String[] result = new String[text.length];
+		int len = text.length;
+		if (len > 10) {
+			len = 10;
+		}
 
-		for (int i = 0; i < text.length; i++) {
+		String[] result = new String[len];
+
+		for (int i = 0; i < len; i++) {
 			List<String> words = Arrays.asList(text[i].split("\\s+"));
 			Collections.shuffle(words);
 			String[] tempResult = (String[]) words.toArray();
@@ -54,11 +59,16 @@ public class ExGen {
 	public ChooseTheVerb exercise3ChooseTheVerb(Exercise ex) {
 		String kind = "choose_correct_verb";
 		String[] text = ex.getSentences();
+		int len = text.length;
+		if (len > 10) {
+			len = 10;
+		}
+
 		Map<Integer, String[]> preResult = new TreeMap<Integer, String[]>();
 
     ParserText pt = new ParserText();
 
-		for (int i = 0; i < text.length; i++) {
+		for (int i = 0; i < len; i++) {
 			String[] verbs;
 			try {
 				verbs = pt.findVerbs(text[i], model);
@@ -74,7 +84,7 @@ public class ExGen {
 		// String[] sent = new String[text.length];
 		Map<Integer, String[]> verbss = new TreeMap<Integer, String[]>();
 
-		for (int i = 0; i < text.length; i++) {
+		for (int i = 0; i < len; i++) {
 			Map<String, String[]> tempResult = swapAndFindVerbs(text[i],
 					preResult.get(i));
 			if (tempResult != null) {
@@ -110,32 +120,62 @@ public class ExGen {
 		return result;
 	}
 
+	
+	//Tests
+	//-----------------------------------------------------------------------------------
 	// test for exercise3
 
-//	public static void main(String[] args) throws IOException {
-//		ChooseTheVerb ch = new ChooseTheVerb();
-//		String one = "I want to play with you";
-//		String two = "Run and run and make this world better";
-//		String three = "Sababa";
-//		String[] arr = new String[3];
-//		arr[0] = one;
-//		arr[1] = two;
-//		arr[2] = three;
-//		ch.setSentences(arr);
-//		ExGen e = new ExGen();
-//		ch = e.exercise3ChooseTheVerb(ch);
-//
-//		String[] res1 = ch.getSentences();
-//		for (String s : res1) {
-//			System.out.println(s);
-//		}
-//		Map<Integer, String[]> v = ch.getVerbs();
-//		for (Map.Entry<Integer, String[]> ee : v.entrySet()) {
-//			for (String s : ee.getValue()) {
-//				System.out.print(s + "  ");
-//			}
-//		}
-//	}
+	// public static void main(String[] args) throws IOException {
+	// ChooseTheVerb ch = new ChooseTheVerb();
+	// String one = "I want to play with you";
+	// String two = "Run and run and make this world better";
+	// String three = "Sababa";
+	// String four =
+	// "Lorem Ipsum is simply dummy text of the printing and typesetting industry. ";
+	// String five =
+	// "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.";
+	// String six =
+	// "When an unknown printer took a galley of type and scrambled it to make a type specimen book.";
+	// String seven = "It has survived not only five centuries";
+	// String eight =
+	// "But also the leap into electronic typesetting, remaining essentially unchanged.";
+	// String nine =
+	// "It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages.";
+	// String ten = "and more recently with desktop publishing software.";
+	// String eleven =
+	// "Software like Aldus PageMaker including versions of Lorem Ipsum.";
+	// String twelve =
+	// " Lorem ipsum dolor sit amet.., comes from a line in section 1.10.32.";
+	// String[] arr = new String[14];
+	// arr[0] = one;
+	// arr[1] = two;
+	// arr[2] = three;
+	// arr[3] = four;
+	// arr[4] = five;
+	// arr[5] = six;
+	// arr[6] = seven;
+	// arr[7] = eight;
+	// arr[8] = nine;
+	// arr[9] = ten;
+	// arr[10] = eleven;
+	// arr[11] = one;
+	// arr[12] = one;
+	// arr[13] = one;
+	// ch.setSentences(arr);
+	// ExGen e = new ExGen();
+	// ch = e.exercise3ChooseTheVerb(ch);
+	//
+	// String[] res1 = ch.getSentences();
+	// for (String s : res1) {
+	// System.out.println(s);
+	// }
+	// Map<Integer, String[]> v = ch.getVerbs();
+	// for (Map.Entry<Integer, String[]> ee : v.entrySet()) {
+	// for (String s : ee.getValue()) {
+	// System.out.print(s + "  ");
+	// }
+	// }
+	// }
 	// test for exercise2MixWords
 	/*
 	 * public static void main(String[] args) { ExGen ex = new ExGen(); String
