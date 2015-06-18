@@ -5,6 +5,11 @@ import java.util.Random;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.hackon.entity.ChooseTheVerb;
 import com.hackon.entity.Exercise;
@@ -12,6 +17,13 @@ import com.hackon.entity.IdentifyPicture;
 import com.hackon.entity.IdentifyWord;
 import com.hackon.entity.SeePicture;
 import com.hackon.ex.ExGen;
+
+
+import com.google.gson.*;
+
+import com.flickr4java.flickr.*;
+
+import com.hackon.entity.*;
 
 @RestController
 public class ExciController {
@@ -88,21 +100,32 @@ public class ExciController {
 		return instance.exercise3ChooseTheVerb(test1());
 	}
 
-	@RequestMapping("/exercises")
-	public Exercise[] exercises() {
-		return new Exercise[] { 
-				picture(), 
-				identifyPicture(), 
-				identifyWord(),
+  
+  //JUST TEST METHOD TO FILL EXERCISE OBJECT
+  public static ChooseTheVerb test1(){
+    ChooseTheVerb ex = new ChooseTheVerb();
+    String[] sentences = {"Hello, how are you doing?", "The long night", "Paint it black"};
+    ex.setSentences(sentences);
+    return ex;
+  }
+
+    @RequestMapping(value = "/exercises")
+    public Exercise[] exercises(@RequestParam(value="sentences") String sentencesJson) {
+      JsonElement sentencesElement = new JsonParser().parse(sentencesJson);
+      JsonArray sentences = sentencesElement.getAsJsonArray();
+
+      for (int i=0; i < sentences.size(); ++i) {
+        String sentence = sentences.get(i).toString();
+        // Create array of nouns
+        // Create array of verbs
+      }
+
+      return new Exercise[] {
+        picture(),
+        identifyPicture(),
+        identifyWord(),
 				mixWords(), 
-				chooseCorrectVerb() };
-	}
-	
-	//JUST TEST METHOD TO FILL EXERCISE OBJECT
-	public static ChooseTheVerb test1(){
-		ChooseTheVerb ex = new ChooseTheVerb();
-		String[] sentences = {"Hello, how are you doing?", "The long night", "Paint it black"};
-		ex.setSentences(sentences);
-		return ex;
-	}
+				chooseCorrectVerb()
+      };
+    }
 }
