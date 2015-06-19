@@ -20,6 +20,12 @@ import com.hackon.entity.IdentifyWord;
 import com.hackon.entity.SeePicture;
 import com.hackon.ex.ExGen;
 
+import opennlp.tools.parser.ParserModel;
+import com.hackon.tools.ParserText;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 import com.google.gson.*;
 
@@ -29,23 +35,35 @@ import com.hackon.entity.*;
 
 @RestController
 public class ExciController {
-	// 'look at me!
-	// look at me now!' said the cat.
-	// 'with a cup and a cake
-	// on the top of my hat!
-	// i can hold up TWO books!
-	// i can hold up the fish!
-	// and a little toy ship!
-	// and some milk on a dish!
-	// and look!
-	// i can hop up and down on the ball!
-	// but that is not all!
-	// oh, no.
-	// that is not all...
+  // 'look at me!
+  // look at me now!' said the cat.
+  // 'with a cup and a cake
+  // on the top of my hat!
+  // i can hold up TWO books!
+  // i can hold up the fish!
+  // and a little toy ship!
+  // and some milk on a dish!
+  // and look!
+  // i can hop up and down on the ball!
+  // but that is not all!
+  // oh, no.
+  // that is not all...
 	private final String[] nouns = new String[] { "cat", "cup", "cake", "hat",
 			"books", "fish", "ship", "milk", "dish", "ball" };
 
 	private static Random rnd = new Random();
+
+  private static ParserModel model;
+  static {
+    InputStream is;
+
+    try {
+      is = new FileInputStream("en-parser-chunking.bin");
+      model = new ParserModel(is);
+    } catch (IOException e1) {
+      // DO_SMTH
+    }
+  }
 
 	private String[] getNouns(int m) {
 		// Floyd's Algorithm apparently
@@ -92,13 +110,13 @@ public class ExciController {
 
 	@RequestMapping("/exercise/mix_words")
 	public Exercise mixWords() {
-		ExGen instance = new ExGen();
+		ExGen instance = new ExGen(model);
 		return instance.exercise2MixWords(test1());
 	}
 
 	@RequestMapping("/exercise/choose_correct_verb")
 	public Exercise chooseCorrectVerb() {
-		ExGen instance = new ExGen();
+		ExGen instance = new ExGen(model);
 		return instance.exercise3ChooseTheVerb(test1());
 	}
 
@@ -124,10 +142,10 @@ public class ExciController {
 
     ArrayList<Exercise> exercises = new ArrayList<Exercise>();
     exercises.add(picture());
-    for (int i=0; i < 2; ++i) {
+    for (int i=0; i < 10; ++i) {
       exercises.add(mixWords());
     }
-    for (int i=0; i < 2; ++i) {
+    for (int i=0; i < 10; ++i) {
       exercises.add(chooseCorrectVerb());
     }
     exercises.add(identifyPicture());

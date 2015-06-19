@@ -21,7 +21,13 @@ import com.hackon.tools.ParserText;
 
 public class ExGen {
 
+	private ParserModel model;
+
 	public static final String DOTS = ".....";
+
+	public ExGen(ParserModel model) {
+		this.model = model;
+	}
 
 	// this is ex number 2
 	public Exercise exercise2MixWords(Exercise ex) {
@@ -50,16 +56,7 @@ public class ExGen {
 		String[] text = ex.getSentences();
 		Map<Integer, String[]> preResult = new TreeMap<Integer, String[]>();
 
-		ParserText pt = new ParserText();
-		InputStream is;
-		ParserModel model = null;
-
-		try {
-			is = new FileInputStream("en-parser-chunking.bin");
-			model = new ParserModel(is);
-		} catch (IOException e1) {
-			// DO_SMTH
-		}
+    ParserText pt = new ParserText();
 
 		for (int i = 0; i < text.length; i++) {
 			String[] verbs;
