@@ -67,8 +67,7 @@ public class ParserText {
 		return nouns;
 	}
 
-	public String[] findVerbs(String sentence, ParserModel model)
-			throws Exception {
+	public String[] findVerbs(String sentence, ParserModel model){
 		line = sentence;
 		nounPhrases = new HashSet<>();
 		verbPhrases = new HashSet<String>();

@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 
+import org.neo4j.cypher.internal.compiler.v2_1.ast.rewriters.literalReplacement;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,6 +24,7 @@ import com.hackon.ex.ExGen;
 import com.hackon.tools.ParserText;
 
 import opennlp.tools.parser.ParserModel;
+
 import com.hackon.tools.ParserText;
 
 import java.io.FileInputStream;
@@ -30,9 +32,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import com.google.gson.*;
-
 import com.flickr4java.flickr.*;
-
 import com.hackon.entity.*;
 
 @RestController
@@ -135,18 +135,25 @@ public class ExciController {
   public List<Exercise> exercises(@RequestParam(value="sentences") String sentencesJson) {
     JsonElement sentencesElement = new JsonParser().parse(sentencesJson);
     JsonArray sentences = sentencesElement.getAsJsonArray();
-    List<String[]> nouns = new ArrayList<String[]>();
-    List<String[]> verbs = new ArrayList<String[]>();
+//    List<String[]> nouns = new ArrayList<String[]>();
+//    List<String[]> verbs = new ArrayList<String[]>();
     ParserText pt = new ParserText();
+    List<String> nouns = new ArrayList<String>();
+    List<String> verbs = new ArrayList<String>();
+    
     
     
     
     for (int i=0; i < sentences.size(); ++i) {
       String sentence = sentences.get(i).toString();
-//      String[] n = pt.findNouns(sentence, new ParserModel("asd"));
-//      String[] v = pt.findVerbs(sentence, new ParserModel("asd"));
-//      nouns.add(n);
-//      verbs.add(v);
+      String[] n = pt.findNouns(sentence, model);
+      for(int k = 0; k < n.length; i++){
+    	  nouns.add(n[k]);
+      }
+      String[] v = pt.findVerbs(sentence, model);
+      for(int k = 0; k < n.length; i++){
+    	  verbs.add(v[k]);
+      }
     }
 
     ArrayList<Exercise> exercises = new ArrayList<Exercise>();
