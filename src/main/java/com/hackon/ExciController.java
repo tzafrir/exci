@@ -135,13 +135,10 @@ public class ExciController {
   public List<Exercise> exercises(@RequestParam(value="sentences") String sentencesJson) {
     JsonElement sentencesElement = new JsonParser().parse(sentencesJson);
     JsonArray sentences = sentencesElement.getAsJsonArray();
-//    List<String[]> nouns = new ArrayList<String[]>();
-//    List<String[]> verbs = new ArrayList<String[]>();
+
     ParserText pt = new ParserText();
     List<String> nouns = new ArrayList<String>();
     List<String> verbs = new ArrayList<String>();
-    
-    
     
     
     for (int i=0; i < sentences.size(); ++i) {
@@ -158,12 +155,10 @@ public class ExciController {
 
     ArrayList<Exercise> exercises = new ArrayList<Exercise>();
     exercises.add(picture());
-    for (int i=0; i < 10; ++i) {
-      exercises.add(mixWords());
-    }
-    for (int i=0; i < 10; ++i) {
-      exercises.add(chooseCorrectVerb());
-    }
+    
+    exercises.add(mixWords());
+    exercises.add(chooseCorrectVerb());
+    
     exercises.add(identifyPicture());
     exercises.add(identifyWord());
     return exercises;

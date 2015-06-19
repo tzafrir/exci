@@ -41,7 +41,7 @@ public class ParserText {
 		}
 	}
 
-	private static void parserActionForVerbs(ParserModel model) throws Exception {
+	private static void parserActionForVerbs(ParserModel model) {
 		Parser parser = ParserFactory.create(model);
 		Parse topParses[] = ParserTool.parseLine(line, parser, 1);
 		for (Parse p : topParses) {

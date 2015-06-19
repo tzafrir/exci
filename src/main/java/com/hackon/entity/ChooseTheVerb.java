@@ -7,7 +7,7 @@ public class ChooseTheVerb extends Exercise {
 	private String kind;
 	private String[] sentences;
 	private String[] images;
-	public Map<Integer, String[]> verbs;
+	private Map<Integer, String[]> verbs;
 
 	public ChooseTheVerb() {
 	}

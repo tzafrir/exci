@@ -1,11 +1,12 @@
 package com.hackon.entity;
 
+
 public class Exercise {
 
 	private String kind;
 	private String[] sentences;
 	private String[] images;
-	
+
 	public Exercise() {
 	}
 
@@ -38,5 +39,5 @@ public class Exercise {
 	public void setImages(String[] images) {
 		this.images = images;
 	}
-	
+
 }
