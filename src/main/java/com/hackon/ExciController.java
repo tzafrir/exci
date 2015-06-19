@@ -3,6 +3,7 @@ package com.hackon;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Random;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import com.hackon.entity.IdentifyPicture;
 import com.hackon.entity.IdentifyWord;
 import com.hackon.entity.SeePicture;
 import com.hackon.ex.ExGen;
+import com.hackon.tools.ParserText;
 
 import opennlp.tools.parser.ParserModel;
 import com.hackon.tools.ParserText;
@@ -133,11 +135,18 @@ public class ExciController {
   public List<Exercise> exercises(@RequestParam(value="sentences") String sentencesJson) {
     JsonElement sentencesElement = new JsonParser().parse(sentencesJson);
     JsonArray sentences = sentencesElement.getAsJsonArray();
-
+    List<String[]> nouns = new ArrayList<String[]>();
+    List<String[]> verbs = new ArrayList<String[]>();
+    ParserText pt = new ParserText();
+    
+    
+    
     for (int i=0; i < sentences.size(); ++i) {
       String sentence = sentences.get(i).toString();
-      // Create array of nouns
-      // Create array of verbs
+//      String[] n = pt.findNouns(sentence, new ParserModel("asd"));
+//      String[] v = pt.findVerbs(sentence, new ParserModel("asd"));
+//      nouns.add(n);
+//      verbs.add(v);
     }
 
     ArrayList<Exercise> exercises = new ArrayList<Exercise>();
