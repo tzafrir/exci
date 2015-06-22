@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Exci</title>
+<link rel="stylesheet" type="text/css" href="exci.css">
+<script src="exci.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+</head>
+<body>
+	<div id="top">
+		<img src="logo.png" alt="Exci" height="60px" width="100px">
+		<span id="tagline">Create exercises for your students</span>
+	</div>
+	<div id="main">	
+			<div id="subject">
+			<img src="sublogo.png" alt="exci" height="100px" width="100px"><br>	
+			Choose a <br> subject<br><br>	
+		    <select>
+			    <option value="reading">Reading</option>
+			    <option value="math">Math</option>
+			    <option value="history">History</option>
+			    <option value="bible">Bible</option>
+		    <select>
+		    </div>
+		    <div id="age">
+		    <img src="agelogo.png" alt="exci" height="100px" width="100px"><br>
+		    Choose the age <br>range for your subject <br><br>
+		    <div id="chkbox">
+		    <input type="checkbox"> First grade <br>
+		    <input type="checkbox"> High school <br>
+		    <input type="checkbox"> Adults
+		    </div>
+		    </div>
+		    <div id="num">
+		    	<img src="numlogo.png" alt="exci" height="100px" width="100px"><br>
+		    	Write the number <br>of exercise creations <br>you want<br><br>
+		    	<input id="inputnum" type="number" step="1" min="1" required>
+		    </div>
+		    <div id="txt">
+		    	<img src="txtlogo.png" alt="exci" height="100px" width="100px"><br>
+		    	Choose a text<br><br>
+		    	<input type="file" id="btnfile" onchange="createGlobalVar(this.files)">
+		    </div>
+		    <div id="create">
+		    	<input type="submit" id="btncreate" value="Create your exercises!" onclick="createExercises()">
+		    </div>
+	</div>
+</body>
+</html>

@@ -34,7 +34,7 @@ public class IdentifyWord extends Exercise {
     }
     Random rand = new Random();
     for (int i = 0; i < allWords.length; ++i) {
-      List<String> results = new FlickrSearch().search(word);
+      List<String> results = new FlickrSearch().search(allWords[i]);
       result[i] = results.get(rand.nextInt(Math.min(results.size(), 3)));
     }
     return result;

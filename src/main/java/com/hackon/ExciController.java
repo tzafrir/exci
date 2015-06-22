@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Random;
 
-import org.neo4j.cypher.internal.compiler.v2_1.ast.rewriters.literalReplacement;
+// import org.neo4j.cypher.internal.compiler.v2_1.ast.rewriters.literalReplacement;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -50,9 +50,7 @@ public class ExciController {
   // but that is not all!
   // oh, no.
   // that is not all...
-	private final String[] nouns = new String[] { "cat", "cup", "cake", "hat",
-			"books", "fish", "ship", "milk", "dish", "ball" };
-
+	
 	private static Random rnd = new Random();
 
   private static ParserModel model;
@@ -67,15 +65,15 @@ public class ExciController {
     }
   }
 
-	private String[] getNouns(int m) {
+	private String[] getSlice(String[] a, int m) {
 		// Floyd's Algorithm apparently
 		HashSet<String> res = new HashSet<String>(m);
-		int n = nouns.length;
+		int n = a.length;
 		for (int i = n - m; i < n; i++) {
 			int pos = rnd.nextInt(i + 1);
-			String noun = nouns[pos];
+			String noun = a[pos];
 			if (res.contains(noun)) {
-				res.add(nouns[i]);
+				res.add(a[i]);
 			} else {
 				res.add(noun);
 			}
@@ -83,15 +81,20 @@ public class ExciController {
 		return res.toArray(new String[0]);
 	}
 
+  @RequestMapping("/")
+  public String getRoot() {
+    return "<meta http-equiv=\"refresh\" content=\"0; url=index.html\">";
+  }
+
 	@RequestMapping("/exercise/picture")
-	public Exercise picture() {
-		return new SeePicture(getNouns(1)[0]);
+	public Exercise picture(List<String> input) {
+		return new SeePicture(getSlice(input.toArray(new String[0]), 1)[0]);
 	}
 
 	@RequestMapping("/exercise/identify_picture")
-	public Exercise identifyPicture() {
+	public Exercise identifyPicture(List<String> input) {
 		final int NUMBER = 4;
-		String[] nouns = getNouns(NUMBER);
+		String[] nouns = getSlice(input.toArray(new String[0]), NUMBER);
 		String[] slice = new String[NUMBER - 1];
 		for (int i = 0; i < NUMBER - 1; ++i) {
 			slice[i] = nouns[i + 1];
@@ -100,9 +103,10 @@ public class ExciController {
 	}
 
 	@RequestMapping("/exercise/identify_word")
-	public Exercise identifyWord() {
+	public Exercise identifyWord(List<String> input) {
 		final int NUMBER = 4;
-		String[] nouns = getNouns(NUMBER);
+		String[] nouns = getSlice(input.toArray(new String[0]), NUMBER);
+    System.out.println(nouns[0]);
 		String[] slice = new String[NUMBER - 1];
 		for (int i = 0; i < NUMBER - 1; ++i) {
 			slice[i] = nouns[i + 1];
@@ -111,15 +115,19 @@ public class ExciController {
 	}
 
 	@RequestMapping("/exercise/mix_words")
-	public Exercise mixWords() {
+	public Exercise mixWords(String[] sentences) {
 		ExGen instance = new ExGen(model);
-		return instance.exercise2MixWords(test1());
+    ChooseTheVerb ex = new ChooseTheVerb();
+    ex.setSentences(sentences);
+		return instance.exercise2MixWords(ex);
 	}
 
 	@RequestMapping("/exercise/choose_correct_verb")
-	public Exercise chooseCorrectVerb() {
-		ExGen instance = new ExGen(model);
-		return instance.exercise3ChooseTheVerb(test1());
+	public Exercise chooseCorrectVerb(String[] sentences) {
+    ExGen instance = new ExGen(model);
+    ChooseTheVerb ex = new ChooseTheVerb();
+    ex.setSentences(sentences);
+		return instance.exercise3ChooseTheVerb(ex);
 	}
 
   
@@ -142,25 +150,34 @@ public class ExciController {
     
     
     for (int i=0; i < sentences.size(); ++i) {
-      String sentence = sentences.get(i).toString();
+      String sentence = sentences.get(i).toString().replace('"', ' ');
       String[] n = pt.findNouns(sentence, model);
-      for(int k = 0; k < n.length; i++){
+
+      System.out.println(n.length);
+      for(int k = 0; k < n.length; k++){
     	  nouns.add(n[k]);
       }
       String[] v = pt.findVerbs(sentence, model);
-      for(int k = 0; k < n.length; i++){
+      for(int k = 0; k < v.length; k++){
     	  verbs.add(v[k]);
       }
     }
 
     ArrayList<Exercise> exercises = new ArrayList<Exercise>();
-    exercises.add(picture());
+    exercises.add(identifyPicture(nouns));
+    exercises.add(identifyWord(nouns));
+
+    // exercises.add(picture(nouns));
     
-    exercises.add(mixWords());
-    exercises.add(chooseCorrectVerb());
+    String[] sents = new String[sentences.size()];
+    for (int i=0; i<sentences.size(); ++i) {
+      sents[i] = sentences.get(i).toString();
+    }
+    // for (int i=0; i<3; ++i) {
+      exercises.add(chooseCorrectVerb(sents));
+    // }
+    // exercises.add(mixWords(sents));
     
-    exercises.add(identifyPicture());
-    exercises.add(identifyWord());
     return exercises;
   }
 }
